@@ -1,0 +1,17 @@
+Part0, Create an application
+1. Sign in to the Azure portal and select Azure Active Directory.
+2. Under Manage, select App registrations > Select New Registration.
+
+Part 1, Add security token
+1. Sign in to the Azure portal and select Azure Active Directory.
+2. Under Manage, select App registrations > Select the created application .
+3. Under Manage, select Certificates & secrets > Select Client secrets > New client secret
+4. Add a Description like: Secret to enable user creation.
+5. Select an Expiration time, make sure to re create a secret before it expires and send it to us.
+6. A secret is created, copy the Value and send it to us.
+
+Part2, Add permissions
+1. Under Manage, select API permissions > Add a permission
+2. Under the tab Microsoft APIs > Select Microsoft Graph > Application permissions
+3. Check User.ReadWrite.All and save it (Add permission)
+4. Grant admin consent to Users.Read.Write.All 
