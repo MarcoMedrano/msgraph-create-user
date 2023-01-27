@@ -1,0 +1,14 @@
+1. Sign in to the Azure portal and select Azure Active Directory.
+2. Under Manage, select App registrations > New registration.
+3. When the Register an application page appears, name it 'edular'
+4. Under Supported account types, select "Accounts in any organizational directory only". Register/Save it.
+5. Select the app created, under Manage, select Authentication.
+6. Under Platform configurations, select Add a platform. In the pane that opens select Single-page application.
+7. Set the Redirect URIs value to https://nau.edular.com/
+8. Repeat last two steps but now for https://admissions-nau.edular.com/
+9. In the pane that opens select Mobile and Desktop application.
+10. Add a Redirect URIs value to edular://azure-sso
+11. Add a Redirect URIs value to urn:ietf:wg:oauth:2.0:oob
+12. Select Configure to apply the changes or press the Save button.
+13. Select Overview.
+14. Take note of the Application (client) ID and Directory (tenant) ID both have the form of 1a2b3c4d-1a2b-1a2b-1a2b-1a2b3c4d5e6f, and send those two values to us.
