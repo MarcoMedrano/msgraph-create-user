@@ -7,4 +7,11 @@ const sso = new SsoAzureUser(
     "<secret>"
 );
 
-sso.create("marco", "medrano", "student.naa.edu");
+const user = {
+    givenName: "marco antonio",
+    surname: "medrano",
+    displayName: "marco medrano"
+};
+console.info("User will be created:", "marco")
+
+sso.create("marco", user, "student.naa.edu");
