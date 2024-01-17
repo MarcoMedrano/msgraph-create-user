@@ -32,7 +32,7 @@ try {
 
     var results = await graphClient.Users.GetAsync(r =>
     {
-        r.QueryParameters.Filter = $"surname eq 'garrett'";
+        r.QueryParameters.Filter = $"surname eq 'medrano'";
         r.QueryParameters.Select = new string[] { "id", "userPrincipalName", "signInSessionsValidFromDateTime"};
     });
 

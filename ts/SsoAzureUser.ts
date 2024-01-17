@@ -41,6 +41,7 @@ export class SsoAzureUser {
 
         const userToPrint = Object.assign({}, user, {passwordProfile: undefined})
         console.info("SsoAzureUser: user to create ", userToPrint)
+        // return {email: userPrincipalName, password}
         const res = await this.client.api("/users").post(user)
         console.info("SsoAzureUser: user created ", res)
 
@@ -75,6 +76,21 @@ export class SsoAzureUser {
         } else {
             return userName
         }
+    }
+
+    public getLastSigninDate = async (userPrincipalName: string) => {
+        let users = await this.client
+            .api("/users")
+            .filter(`userPrincipalName eq '${userPrincipalName}'`)
+            .select('signInActivity')
+            .get()
+
+        if(users.value.length <= 0) throw `user ${userPrincipalName} not found`
+        let user = users.value[0]
+
+        console.info(`sign`, user.signInActivity)
+
+        return user.signInActivity?.lastSignInDateTime
     }
 
     private buildUserName = async (

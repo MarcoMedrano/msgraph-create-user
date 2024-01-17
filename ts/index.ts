@@ -1,17 +1,23 @@
 import "isomorphic-fetch";
 import { SsoAzureUser } from "./SsoAzureUser";
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '../.env' });
 
 const sso = new SsoAzureUser(
-    "<tenantid>",
-    "<clientid>",
-    "<secret>"
+    process.env.TenantId as string,
+    process.env.ClientId as string,
+    process.env.Secret as string
 );
 
 const user = {
-    givenName: "marco antonio",
-    surname: "medrano",
-    displayName: "marco medrano"
+    givenName: "Aaron",
+    surname: "Davis",
+    displayName: "Aaron Davis"
 };
-console.info("User will be created:", "marco")
+//console.info("User will be created:", user)
 
-sso.create("marco", user, "student.naa.edu");
+// sso.create("Aaron", user, "student.naa.edu");
+sso.getLastSigninDate("jgarrett@student.naa.edu").then(res =>{
+    console.info("Found " + res);
+});
