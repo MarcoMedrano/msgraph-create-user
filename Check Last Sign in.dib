@@ -1,0 +1,46 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:Microsoft.Graph"
+#r "nuget:Microsoft.Identity.Client"
+#r "nuget:Azure.Identity"
+#r "nuget:DotNetEnv"
+
+using Microsoft.Graph;
+using Microsoft.Graph.Models;
+using Azure.Identity;
+using Microsoft.Identity.Client;
+using DotNetEnv;
+
+#!csharp
+
+Env.TraversePath().Load();
+// https://learn.microsoft.com/en-us/graph/api/user-list?view=graph-rest-1.0&tabs=csharp#tabpanel_9_csharp
+var clientSecretCredential = new ClientSecretCredential(
+Env.GetString("TenantId"),
+Env.GetString("ClientId"),
+Env.GetString("Secret"));
+
+var graphClient = new GraphServiceClient(clientSecretCredential);
+
+#!csharp
+
+//var userId = "7642ddda-8ebb-499a-80cb-a47f179f9b98";// Yo
+var userId = "edbcf297-a0dc-43bf-94d1-ebcb251dcd68";
+
+try
+{
+    var result = await graphClient.Users[userId].GetAsync((requestConfiguration) =>
+    {
+        requestConfiguration.QueryParameters.Select = ["displayName","userPrincipalName","signInActivity"];
+    });
+
+    Console.WriteLine($"User {result.UserPrincipalName} {result.SignInActivity?.LastSignInDateTime}");
+}
+catch (ServiceException ex)
+{
+    Console.WriteLine($"Error getting sign-in activities: {ex.Message}");
+}

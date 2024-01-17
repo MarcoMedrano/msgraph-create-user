@@ -1,0 +1,53 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!csharp
+
+#r "nuget:Microsoft.Graph"
+#r "nuget:Microsoft.Identity.Client"
+#r "nuget:Azure.Identity"
+#r "nuget:DotNetEnv"
+
+using Microsoft.Graph;
+using Microsoft.Graph.Models;
+using Azure.Identity;
+using Microsoft.Identity.Client;
+using DotNetEnv;
+
+#!csharp
+
+Env.TraversePath().Load();
+// https://learn.microsoft.com/en-us/graph/api/user-list?view=graph-rest-1.0&tabs=csharp#tabpanel_9_csharp
+var clientSecretCredential = new ClientSecretCredential(
+Env.GetString("TenantId"),
+Env.GetString("ClientId"),
+Env.GetString("Secret"));
+
+var graphClient = new GraphServiceClient(clientSecretCredential);
+
+#!csharp
+
+try {
+
+    var results = await graphClient.Users.GetAsync(r =>
+    {
+        r.QueryParameters.Filter = $"surname eq 'garrett'";
+        r.QueryParameters.Select = new string[] { "id", "userPrincipalName", "signInSessionsValidFromDateTime"};
+    });
+
+    foreach(var found in results.Value)
+    {
+        // var found = results.FirstOrDefault();
+        Console.WriteLine("======================================================");
+        foreach (var field in found.GetType().GetProperties())
+        {
+            var value = field.GetValue(found);
+            if (value is not null) Console.WriteLine(field.Name + ": " + value);
+        }
+    }
+}
+catch(Microsoft.Graph.Models.ODataErrors.ODataError e)
+{
+    Console.WriteLine(e.Message);
+}
